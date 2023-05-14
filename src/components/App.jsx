@@ -35,8 +35,22 @@ class App extends React.Component {
     const updateContacts = [...currentContact, newContact];
 
     this.setState({ contacts: updateContacts });
-    console.log(this.state);
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const contactsParsed = JSON.parse(contacts);
+    
+    if (contactsParsed) {
+      this.setState({contacts: contactsParsed})
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    }
+  }
 
   handleChangeFilter = event => {
     const { value } = event.currentTarget;
